@@ -1,8 +1,13 @@
 import flask
-from flask import request, jsonify
+from flask import request, jsonify, after_this_request
+# pip3 install -U flask-cors
+from flask_cors import CORS, cross_origin 
 import sqlite3
 
 app = flask.Flask(__name__)
+cors = CORS(app)
+
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["DEBUG"] = True
 
 def dict_factory(cursor, row):
@@ -19,8 +24,14 @@ def home():
 
 
 @app.route('/api/v1/resources/books/all', methods=['GET'])
+@cross_origin()
 def api_all():
-    conn = sqlite3.connect('b.db')
+    @after_this_request
+    def add_header(response):
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
+
+    conn = sqlite3.connect('db/books.db')
     conn.row_factory = dict_factory
     cur = conn.cursor()
     all_books = cur.execute('SELECT * FROM books;').fetchall()
