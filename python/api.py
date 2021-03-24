@@ -23,7 +23,7 @@ def home():
 <p>A prototype API for distant reading of science fiction novels.</p>'''
 
 
-@app.route('/api/v1/resources/books/all', methods=['GET'])
+@app.route('/api/v1/energymonitor/all', methods=['GET'])
 @cross_origin()
 def api_all():
     @after_this_request
@@ -31,10 +31,10 @@ def api_all():
         response.headers['Access-Control-Allow-Origin'] = '*'
         return response
 
-    conn = sqlite3.connect('db/books.db')
+    conn = sqlite3.connect('db/database.db')
     conn.row_factory = dict_factory
     cur = conn.cursor()
-    all_books = cur.execute('SELECT * FROM books;').fetchall()
+    all_books = cur.execute('SELECT * FROM EnergyMonitor;').fetchall()
 
     return jsonify(all_books)
 
