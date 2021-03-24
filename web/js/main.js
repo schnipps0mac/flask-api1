@@ -30,34 +30,45 @@ const onClickToggleLoop = () => {
 };
 
 function createHtmlFromJson(json) {
-  let listItems = "";
+  let tableRows = "";
   if (Array.isArray(json)) {
-    json.forEach((entry) => (listItems += createHtmlForSingleEntry(entry)));
+    json.forEach((entry) => (tableRows += createHtmlForSingleEntry(entry)));
   }
 
+  const table = `<table class='dataTable' style="width:100%"> 
+    <tr>
+        <th>timestamp</th>
+        <th>value 1</th>
+        <th>value 2</th>
+        <th>value 3</th>
+    </tr>
+    ${tableRows}
+    </table>`;
+
   const target = document.getElementById("dataContainer");
-  target.innerHTML += listItems;
+  target.innerHTML += table;
 }
 
 // {id: 0, timestamp: "2021-03-24", value1: 13.4, value2: "14", value3: 123}
 function createHtmlForSingleEntry(singleEntry) {
-  let listItems = `
-        <li id='timestamp'>
-        Timestamp: ${singleEntry.timestamp}
-        </li>
-        <li id='value1'>
-        Value1: ${singleEntry.value1}
-        </li>
-        <li id='value2'>
-        Value2: ${singleEntry.value2}
-        </li>
-        <li id='value3'>
-        Value3: ${singleEntry.value3}
-        </li>`;
+  let tableData = `
+        <td>
+            ${singleEntry.timestamp}
+        </td>
+        <td>
+            ${singleEntry.value1}
+        </td>
+        <td>
+            ${singleEntry.value2}
+        </td>
+        <td>
+            ${singleEntry.value3}
+        </td>
+    `;
 
-  const listTemplate = `
-    <ul class='valueList'>
-        ${listItems}
-    </ul>`;
-  return listTemplate;
+  const tableRow = `
+    <tr>
+        ${tableData}
+    </tr>`;
+  return tableRow;
 }
